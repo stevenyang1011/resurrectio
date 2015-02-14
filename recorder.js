@@ -373,11 +373,12 @@ TestRecorder.ElementInfo.prototype.getCleanCSSSelector = function(element) {
     var accuracy = document.querySelectorAll(selector).length;
     if(element.id) {
         selector = "#" + element.id.replace(/\./g, '\\.');
+        selector = "#" + element.id.replace(/\:/g, '\\:');
         accuracy = document.querySelectorAll(selector).length
         if(accuracy==1) return selector;
     }
     if(element.className) {
-        tmp_selector = '.' + element.className.trim().replace(/ /g,".");
+        tmp_selector = '.' + element.className.trim().replace(/ +/g,".");
         if(document.querySelectorAll(tmp_selector).length < accuracy) {
             selector = tmp_selector;
             accuracy = document.querySelectorAll(selector).length

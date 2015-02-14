@@ -312,12 +312,14 @@ CasperRenderer.prototype.click = function(item) {
   } else {
     var selector;
     if (tag == 'a') {
-      var xpath_selector = this.getLinkXPath(item);
-      if(xpath_selector) {
-        selector = 'x("//a['+xpath_selector+']")';
-      } else {
-        selector = item.info.selector;
-      }
+      selector = item.info.selector;
+      selector = '"' + selector + '"';
+      // var xpath_selector = this.getLinkXPath(item);
+      // if(xpath_selector) {
+      //   selector = 'x("//a['+xpath_selector+']")';
+      // } else {
+      //   selector = item.info.selector;
+      // }
     } else if (tag == 'input' || tag == 'button') {
       selector = this.getFormSelector(item) + this.getControl(item);
       selector = '"' + selector + '"';
@@ -438,15 +440,16 @@ CasperRenderer.prototype.checkText = function(item) {
 
 CasperRenderer.prototype.checkHref = function(item) {
   var href = this.pyrepr(this.shortUrl(item.info.href));
-  var xpath_selector = this.getLinkXPath(item);
-  if(xpath_selector) {
-    selector = 'x("//a['+xpath_selector+' and @href='+ href +']")';
-  } else {
-    selector = item.info.selector+'[href='+ href +']';
-  }
-    this.stmt('casper.then(function() {');
-    this.stmt('    test.assertExists('+selector+');');
-    this.stmt('});');
+  selector = item.info.selector+'[href='+ href +']';
+  // var xpath_selector = this.getLinkXPath(item);
+  // if(xpath_selector) {
+  //   selector = 'x("//a['+xpath_selector+' and @href='+ href +']")';
+  // } else {
+  //   selector = item.info.selector+'[href='+ href +']';
+  // }
+  this.stmt('casper.then(function() {');
+  this.stmt('    test.assertExists('+selector+');');
+  this.stmt('});');
 }
 
 CasperRenderer.prototype.checkEnabled = function(item) {
